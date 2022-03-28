@@ -7,8 +7,11 @@ namespace assignment {
   }
 
   void BinarySearchTree::Insert(int key, int value) {
-    Node* node = new Node(key,value);
-    insert(key,value,node);
+    if (root_ == nullptr) {
+      root_ = new Node(key, value);
+    } else {
+      insert(key, value, root_);
+    }
   }
 
   bool BinarySearchTree::Remove(int key) {
@@ -25,19 +28,16 @@ namespace assignment {
     if (node != nullptr) {
       return node->value;
     } else {
-      return true;
+      return std::nullopt;
     }
   }
 
   bool BinarySearchTree::Contains(int key) const {
-    if (Find(key) == std::nullopt) {
-      return false;
-    }
-    return true;
+    return find(key, root_) != nullptr;
   }
 
   bool BinarySearchTree::IsEmpty() const {
-    return (root_ == nullptr);
+    return root_ == nullptr;
   }
 
   std::optional<int> BinarySearchTree::FindMin() const {
@@ -70,9 +70,9 @@ namespace assignment {
     } else {
       if (node->key == key) {
         node->value = value;
-      } else if (node->key > key) {
-        insert(key, value, node->right);
       } else if (node->key < key) {
+        insert(key, value, node->right);
+      } else if (node->key > key) {
         insert(key, value, node->left);
       }
     }
@@ -92,7 +92,9 @@ namespace assignment {
   }
 
   Node* BinarySearchTree::find(int key, Node* node) const {
-    if (node->key > key) {
+    if (node == nullptr) {
+      return nullptr;
+    } else if (node->key > key) {
       return find(key, node->left);
     } else if (node->key < key) {
       return find(key, node->right);
