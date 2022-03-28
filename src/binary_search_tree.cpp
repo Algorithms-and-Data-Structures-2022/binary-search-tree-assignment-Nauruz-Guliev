@@ -79,8 +79,32 @@ namespace assignment {
   }
 
   bool BinarySearchTree::remove(int key, Node*& node) {
-    return false;
+    if (node == nullptr) {
+      return false;
+    }
+    if (key < node->key) {
+      remove(key, node->left);
+    } else if (key > node->key) {
+      remove(key, node->right);
+    } else {
+      if (node->left == nullptr && node->right == nullptr) {
+        delete node;
+        node = nullptr;
+      } else if (node->left && node->right) {
+        Node* newNode = find_min(node->right);
+        node->key = newNode->key;
+        node->value = newNode->value;
+        remove(newNode->key, node->right);
+      } else {
+        Node* child = (node->left) ? node->left : node->right;
+        Node* current = node;
+        node = child;
+        delete current;
+      }
+    }
+    return true;
   }
+
 
   void BinarySearchTree::clear(Node* node) {
     if (node == nullptr) {
@@ -110,6 +134,17 @@ namespace assignment {
       return node;
     } else {
       return find_min(node->left);
+    }
+  }
+
+  void BinarySearchTree::searchParent(Node*& curr, int key, Node*& parent) {
+    while (curr != nullptr && curr->key != key) {
+      parent = curr;
+      if (key < curr->key) {
+        curr = curr->left;
+      } else {
+        curr = curr->right;
+      }
     }
   }
 

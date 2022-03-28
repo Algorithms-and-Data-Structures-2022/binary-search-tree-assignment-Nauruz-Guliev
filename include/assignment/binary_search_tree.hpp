@@ -130,6 +130,7 @@ namespace assignment {
     Node *find_min(Node *node) const;
 
     Node *find_max(Node *node) const;
+    void searchParent(Node *&curr, int key, Node *&parent);
   };
 
 }  // namespace assignment
