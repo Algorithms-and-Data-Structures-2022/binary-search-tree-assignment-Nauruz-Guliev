@@ -63,6 +63,7 @@ namespace assignment {
      */
     void Clear();
 
+
     /**
      * Поиск узла по ключу.
      *
